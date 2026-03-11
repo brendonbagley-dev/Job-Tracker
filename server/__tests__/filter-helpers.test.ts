@@ -10,6 +10,7 @@ function makeProspect(id: number, interestLevel: string): Prospect {
     status: "Bookmarked",
     interestLevel,
     notes: null,
+    salary: null,
     createdAt: new Date(),
   };
 }
