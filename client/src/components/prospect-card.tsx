@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { Prospect } from "@shared/schema";
 import { Button } from "@/components/ui/button";
-import { ExternalLink, Trash2, Pencil, Flame, ThumbsUp, Minus } from "lucide-react";
+import { ExternalLink, Trash2, Pencil, Flame, ThumbsUp, Minus, DollarSign } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
@@ -12,6 +12,10 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { EditProspectForm } from "./edit-prospect-form";
+
+function formatSalary(salary: number): string {
+  return "$" + salary.toLocaleString("en-US");
+}
 
 function InterestIndicator({ level }: { level: string }) {
   switch (level) {
@@ -105,6 +109,15 @@ export function ProspectCard({ prospect }: { prospect: Prospect }) {
 
         <div className="flex items-center gap-1.5 flex-wrap">
           <InterestIndicator level={prospect.interestLevel} />
+          {prospect.salary != null && (
+            <span
+              className="inline-flex items-center gap-0.5 text-xs font-medium text-green-600 dark:text-green-400"
+              data-testid={`text-salary-${prospect.id}`}
+            >
+              <DollarSign className="w-3 h-3" />
+              {formatSalary(prospect.salary)}
+            </span>
+          )}
         </div>
 
         {prospect.jobUrl && (

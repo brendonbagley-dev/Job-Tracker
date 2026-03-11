@@ -40,6 +40,19 @@ export async function registerRoutes(
     if (body.jobUrl !== undefined) updates.jobUrl = body.jobUrl;
     if (body.notes !== undefined) updates.notes = body.notes;
 
+    if (body.salary !== undefined) {
+      const raw = body.salary;
+      if (raw === null || raw === "") {
+        updates.salary = null;
+      } else {
+        const num = Number(raw);
+        if (!Number.isFinite(num) || !Number.isInteger(num) || num < 0 || num > 10_000_000) {
+          return res.status(400).json({ message: "Salary must be a whole number between 0 and 10,000,000" });
+        }
+        updates.salary = num;
+      }
+    }
+
     if (body.status !== undefined) {
       if (!STATUSES.includes(body.status)) {
         return res.status(400).json({ message: `Status must be one of: ${STATUSES.join(", ")}` });
